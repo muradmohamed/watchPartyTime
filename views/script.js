@@ -6,7 +6,7 @@ const peeps = document.querySelector('.peepsContainer');
 const popup = document.querySelector('.popup');
 const myPeer = new Peer(undefined, {
 	host: "/",
-	port: "3002"
+	port: "3001"
 });
 socket.on('movie-check', userId => {
 	movieUser = userId;
