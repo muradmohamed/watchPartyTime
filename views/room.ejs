@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script>
+  <script type="text/javascript" src="/socket.io/socket.io.js" defer></script>
+  <script type="text/javascript" src="script.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    const ROOM_ID = "<%= roomId %>"
+  </script>
+
+  <style>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    position: relative;
+    padding: 0;
+    margin: 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #333;
+  }
+  .container {
+    display: flex;
+  }
+  .popup {
+    background: #333;
+    color: white;
+    z-index: 10000;
+    flex-direction: column;
+    position: absolute;
+    width: 50vw;
+    height: 40vh;
+    left: 25%;
+    top: 25%;
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+  .popupText {
+    height: 50%;
+    width: 100%;
+  }
+  .popupOptions {
+    height: 50%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .option {
+    width: 25%;
+    height: 50%;
+    border: 1px solid rgba(255,255,255,0.5);
+    align-items: center;
+    justify-content: center;
+  }
+  .popupClicked {
+    display: none;
+  }
+  .movieInactive {
+    background: grey;
+    color: rgba(255,0,0,0.5);
+    pointer-events: none;
+  }
+
+  .peepsContainer {
+    z-index: 2;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    margin-top: 5%;
+    padding-top: 1.25%;
+    left: 1.5%;
+    height: 80%;
+    width: 5vw;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.15);
+  }
+  .peep {
+    margin: 10% 0;
+    border-radius: 30%;
+    height: 0.75em;
+    width: 0.75em;
+    background: rgb(48, 95, 255);
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+  }
+  #theShow {
+    z-index: 1;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+  .movie {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  </style>
+</head>
+<body>
+  <div class="container popup">
+    <div class="container popupText">
+
+    </div>
+    <div class="container popupOptions">
+      <div class="container option screen" id="screen">
+        <p>
+          Host
+        </p>
+      </div>
+      <div class="container option mic" id="mic">
+        <p>
+          Guest
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="container" id="theShow">
+    <div class="peepsContainer container">
+
+    </div>
+  </div>
+</body>
+</html>
