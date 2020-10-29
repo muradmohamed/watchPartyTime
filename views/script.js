@@ -5,7 +5,7 @@ const videoGrid = document.getElementById("theShow");
 const peeps = document.querySelector('.peepsContainer');
 const popup = document.querySelector('.popup');
 const myPeer = new Peer(undefined, {
-	host: "watchpartytime.herokuapp.com",
+	host: "/",
 	port: "3001"
 });
 socket.on('movie-check', userId => {
