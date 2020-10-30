@@ -13,20 +13,44 @@
   <style>
   * {
     box-sizing: border-box;
+    font-family: "Roboto";
   }
+  .loader {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    border: 1px solid red;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    z-index: 100000;
+    transition: all 1s;
+    opacity: 1;
+  }
+  .loaded {
+    opacity: 0;
+    }
   body {
     position: relative;
     padding: 0;
-    margin: 1%;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #333;
+  }
+  .mainWrapper {
+    padding: 2.5%;
+    background: rgba(0,0,0,0);
+    width: 100vw;
+    height: 100vh;
+    transition:all 2s;
   }
   .container {
     display: flex;
   }
   .popup {
+    border-radius: 5px;
     background: #333;
     color: white;
     z-index: 10000;
@@ -38,10 +62,7 @@
     top: 25%;
     border: 1px solid rgba(255,255,255,0.5);
   }
-  .popupText {
-    height: 50%;
-    width: 100%;
-  }
+
   .popupOptions {
     height: 50%;
     flex-direction: row;
@@ -49,14 +70,87 @@
     justify-content: space-around;
   }
   .option {
+    z-index: 1;
+    position: relative;
+    border-radius: 5px;
     width: 25%;
     height: 50%;
     border: 1px solid rgba(255,255,255,0.5);
     align-items: center;
     justify-content: center;
+    transition: all 0.5s;
+  }
+  .option p {
+    padding: 10% 35%;
+  }
+  .option div {
+    z-index: 10;
+    position: absolute;
+    height: 100%;
+    width: 100%;
   }
   .popupClicked {
     display: none;
+  }
+  .popupText {
+    flex-direction: column;
+    height: 60%;
+    width: 100%;
+  }
+  .popupMoreText {
+    justify-content: center;
+    height: 50%;
+    width: 100%;
+    text-align: center;
+  }
+  .colors {
+    justify-content: center;
+    align-items: center;
+    height: 40%;
+    width: 100%;
+  }
+  .color {
+    border-radius: 5px;
+    width: 1em;
+    height: 1em;
+    margin: 2.5%;
+    transition: all 0.25s;
+  }
+  /*----Colors----*/
+  .red {
+    background: rgb(227, 0, 0);
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+  .blue {
+    background: rgb(0,0,255);
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+  .purple {
+    background: rgb(138,43,226);
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+  .orange {
+    background: rgb(255, 69, 0);
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+  .green {
+    background: rgb(0, 128, 0);
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+  .yellow {
+    background: rgb(255,255,0);
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+  .turq {
+    background: rgb(0,206,209);
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+  .pink {
+    background: #FF00FF;
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+  .colorPicked {
+    box-shadow: 0 0 5px white;
   }
   .movieInactive {
     background: grey;
@@ -67,60 +161,125 @@
   .peepsContainer {
     z-index: 2;
     flex-direction: column;
-    align-items: center;
     justify-content: flex-start;
     position: absolute;
     margin-top: 5%;
     padding-top: 1.25%;
+    padding-right: 0;
     left: 1.5%;
     height: 80%;
     width: 5vw;
     border-radius: 5px;
-    background: rgba(255,255,255,0.15);
+    box-shadow: 3px 3px 3px rgba(0,0,0,0.5);
+    background: #333;
+    transition: all 1s;
   }
   .peep {
-    margin: 10% 0;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    margin-left: 1.75vw;
     border-radius: 30%;
     height: 0.75em;
     width: 0.75em;
-    background: rgb(48, 95, 255);
+    background: rgba(48,95,255,1);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    transition: all 1s;
+  }
+  .peepsActive {
+    background: rgba(255,255,255,0.15);
+    left: -5%;
+  }
+  .peepsActive video {
+    background: rgba(48, 95, 255, 0.75);
+    margin-left: 3vw;
+
+  }
+  .peepInactive {
+    opacity: 0.5;
+  }
+  .movieButton {
+    position: absolute;
+    margin-left: 1.75vw;
+    bottom: 6.25%;
+    height: 0.85em;
+    width: 0.85em;
+    background: red;
+    border-radius: 50%;
     box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+    border: 2px solid rgba(255,255,255,0.5);
+    transition: all 1s;
+  }
+  .movieButtonMovie {
+    margin-left: 3vw;
+  }
+  .movieTime {
+    background: rgba(0,0,0,0.8);
   }
   #theShow {
+    background: white;
     z-index: 1;
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: 100%;
   }
   .movie {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
   }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/6cc08cc3c7.js" crossorigin="anonymous"></script>
 </head>
 <body>
+  <div class="container loader">
+    <i class="fas fa-tv fa-4x"></i>
+    <h1>WatchPartyTime</h1>
+  </div>
+<div class="mainWrapper">
   <div class="container popup">
     <div class="container popupText">
-
+      <div class="container popupMoreText">
+      <!--  <p>Choose a color and whether you'd like to host or view the movie.</p> -->
+      <p>
+        Would you like to host or view the movie?
+      </p>
+      </div>
+      <!--<div class="container colors">
+        <div class="color yellow" id="yellow"></div>
+        <div class="color red"id ="red"></div>
+        <div class="color turq" id="turq"></div>
+        <div class="color blue" id="blue"></div>
+        <div class="color orange" id="orange"></div>
+        <div class="color purple" id="purple"></div>
+        <div class="color green" id="green"></div>
+        <div class="color pink" id="pink"></div>
+      </div> -->
     </div>
     <div class="container popupOptions">
-      <div class="container option screen" id="screen">
-        <p>
+      <div class="container option" id="screen">
+        <p class="screen">
           Host
         </p>
+
       </div>
-      <div class="container option mic" id="mic">
-        <p>
+      <div class="container option" id="mic">
+        <p class="mic">
           Guest
         </p>
+
       </div>
     </div>
   </div>
   <div class="container" id="theShow">
     <div class="peepsContainer container">
+      <div class="movieButton">
 
+      </div>
     </div>
   </div>
+</div>
+
 </body>
 </html>

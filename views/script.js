@@ -1,6 +1,7 @@
 const socket = io("/");
 let videoSrc;
 let movieUser;
+let movietime;
 const videoGrid = document.getElementById("theShow");
 const peeps = document.querySelector('.peepsContainer');
 const popup = document.querySelector('.popup');
@@ -9,6 +10,14 @@ const myPeer = new Peer(undefined, {
 	secure: "true",
 	port: "443"
 });
+
+window.onload = () => {
+	document.querySelector('.loader').classList.add('loaded');
+	document.querySelector('.loader').addEventListener("transitionend", () => {
+		document.querySelector('.loaded').style.display = "none";
+	})
+
+}
 socket.on('movie-check', userId => {
 	movieUser = userId;
   console.log(userId);
@@ -22,18 +31,14 @@ const peers = {}
 
 popup.addEventListener('click', (event) => {
   if (event.target.classList.contains('screen')) {
-    popup.classList.add('popupClicked');
     videoSrc = 0;
     socket.emit('movie');
     navigator.mediaDevices.getDisplayMedia({
       video: true,
       audio: true
     }).then(stream => {
-			for (s in stream) {
-			console.log('stream: ' + s)
-		}
       addVideoStreamMovie(myVideo, stream)
-
+			popup.classList.add('popupClicked');
       myPeer.on('call', call => {
         console.log('STARTING STREAM')
         call.answer(stream)
@@ -55,13 +60,13 @@ popup.addEventListener('click', (event) => {
   })
 }
     else if (event.target.classList.contains('mic')) {
-      popup.classList.add('popupClicked');
       videoSrc = 1;
       navigator.mediaDevices.getUserMedia({
         video: false,
         audio: true
       }).then(stream => {
         addVideoStreamPeep(myVideo, stream)
+				popup.classList.add('popupClicked');
 
         myPeer.on('call', call => {
           console.log('STARTING STREAM')
@@ -101,9 +106,14 @@ popup.addEventListener('click', (event) => {
         )
       })
     })
-}}, true)
+}
+}, true)
 
-
+socket.on('movie-time', () => {
+	if (movietime != 0) {
+	movieTime();
+}
+})
 socket.on('user-disconnected', userId => {
   if (peers[userId]) peers[userId].close()
 })
@@ -155,5 +165,30 @@ function addVideoStreamPeep(video, stream) {
     video.play();
   });
   video.classList.add('peep');
+	//video.classList.add(color);
   peeps.appendChild(video);
 }
+function movieTime() {
+	peeps.classList.toggle('peepsActive');
+	document.querySelector('.mainWrapper').classList.toggle('movieTime');
+	document.querySelector('.movieButton').classList.toggle('movieButtonMovie');
+}
+
+document.querySelector('.movieButton').addEventListener("click", () => {
+	socket.emit('movie-time');
+	movieTime();
+})
+
+let color;
+/*document.querySelector('.colors').addEventListener('click', event => {
+	if (event.target.classList.contains('color')) {
+		event.target.classList.add('colorPicked');
+		color = event.target.id;
+		let colors = document.getElementsByClassName('color');
+		for(let x = 0; x < colors.length; x++) {
+			if (colors[x].id != event.target.id) {
+				colors[x].classList.remove('colorPicked');
+			}
+		}
+	}
+})*/

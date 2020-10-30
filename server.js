@@ -39,6 +39,9 @@ io.on('connection', socket => {
         console.log('saved movie host: ' + movieUser);
       }
     })
+    socket.on('movie-time', () => {
+      socket.to(roomId).emit('movie-time')
+    })
   /*  socket.on('movie-def', () => {
       socket.emit('movie-check', movieUser);
     })*/
