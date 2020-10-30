@@ -111,10 +111,9 @@ popup.addEventListener('click', (event) => {
 }, true)
 
 socket.on('movie-time', () => {
-	if (movietime != 0) {
 	movieTime();
 }
-})
+)
 socket.on('user-disconnected', userId => {
   if (peers[userId]) peers[userId].close()
 })
@@ -173,6 +172,7 @@ function movieTime() {
 	peeps.classList.toggle('peepsActive');
 	document.querySelector('.mainWrapper').classList.toggle('movieTime');
 	document.querySelector('.movieButton').classList.toggle('movieButtonMovie');
+	document.querySelector('.cover').classList.toggle('coverUp');
 }
 
 document.querySelector('.movieButton').addEventListener("click", () => {
