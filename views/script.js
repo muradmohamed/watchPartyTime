@@ -10,6 +10,7 @@ const myPeer = new Peer(undefined, {
 	secure: "true",
 	port: "443"
 });
+document.querySelector('.loader').classList.remove('loading');
 
 window.onload = () => {
 	document.querySelector('.loader').classList.add('loaded');
@@ -22,7 +23,7 @@ socket.on('movie-check', userId => {
 	movieUser = userId;
   console.log(userId);
   console.log('MOVIE CHECK');
-  popup.querySelector('.screen').classList.add('movieInactive');
+  document.getElementById('screen').classList.add('movieInactive');
 	console.log('MOVIEUSER: ' + movieUser);
 })
 const myVideo = document.createElement('video')
