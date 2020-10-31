@@ -14,6 +14,7 @@ app.get('/:room', (req, res) => {
   res.render('room', { roomId: req.params.room })
 })
 let movieUser;
+let movieState = 0;
 let roomData = {};
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
@@ -39,8 +40,13 @@ io.on('connection', socket => {
         console.log('saved movie host: ' + movieUser);
       }
     })
-    socket.on('movie-time', () => {
-      socket.to(roomId).emit('movie-time')
+    socket.on('movie-time', (movieStateServer) => {
+      if (movieStateServer == 0) {
+      movieStateServer = 1;
+    } else {
+      movieStateServer = 0;
+    }
+      socket.to(roomId).emit('movie-time', movieStateServer)
     })
   /*  socket.on('movie-def', () => {
       socket.emit('movie-check', movieUser);

@@ -31,6 +31,24 @@ myVideo.muted = true
 const peers = {}
 
 popup.addEventListener('click', (event) => {
+/*	if (navigator.userAgent.indexOf("Chrome") !== -1) {
+		mic = webkitGetUserMedia;
+	} else if (navigator.userAgent.indexOf("Firefox") !== -1) {
+		mic = mozGetUserMedia;
+	} else {
+		mic = getUserMedia;
+	}
+
+	if (navigator.userAgent.indexOf("Chrome") !== -1) {
+		display = webkitGetDisplayMedia;
+	} else if (navigator.userAgent.indexOf("Firefox") !== -1) {
+		display = mozGetDisplayMedia;
+	} else {
+		display = getDisplayMedia;
+	}*/
+	//var getUserMedia = navigator.mediaDevices.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia;
+	//var getDisplayyMedia = navigator.mediaDevices.getDisplayMedia || navigator.mediaDevices.webkitGetDisplayMedia || navigator.mediaDevices.mozGetDisplayMedia;
+
   if (event.target.classList.contains('screen')) {
     videoSrc = 0;
     socket.emit('movie');
@@ -168,16 +186,27 @@ function addVideoStreamPeep(video, stream) {
 	//video.classList.add(color);
   peeps.appendChild(video);
 }
-function movieTime() {
+let movieState = 0;
+function movieTime(movieStateServer) {
+/*	if (movieStateServer == 0) {
 	peeps.classList.toggle('peepsActive');
-	document.querySelector('.mainWrapper').classList.toggle('movieTime');
-	document.querySelector('.movieButton').classList.toggle('movieButtonMovie');
-	document.querySelector('.cover').classList.toggle('coverUp');
+	document.querySelector('.mainWrapper').classList.add('movieTime');
+	document.querySelector('.movieButton').classList.add('movieButtonMovie');
+	//document.querySelector('.cover').classList.add('coverUp');
+} if (movieStateServer == 1) {
+	document.querySelector('.mainWrapper').classList.remove('movieTime');
+	document.querySelector('.movieButton').classList.remove('movieButtonMovie');
+//	document.querySelector('.cover').classList.remove('coverUp');
+}*/
+peeps.classList.toggle('peepsActive');
+document.querySelector('.mainWrapper').classList.toggle('movieTime');
+document.querySelector('.movieButton').classList.toggle('movieButtonMovie');
 }
 
 document.querySelector('.movieButton').addEventListener("click", () => {
 	socket.emit('movie-time');
-	movieTime();
+	//movieTime(movieStateServer);
+	movieTime()
 })
 
 let color;
