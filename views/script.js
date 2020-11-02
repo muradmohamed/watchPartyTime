@@ -80,6 +80,7 @@ popup.addEventListener('click', (event) => {
 }
     else if (event.target.classList.contains('mic')) {
       videoSrc = 1;
+			if (navigator.mediaDevices.getUserMedia != undefined) {
       navigator.mediaDevices.getUserMedia({
         video: false,
         audio: true
@@ -94,7 +95,7 @@ popup.addEventListener('click', (event) => {
           /*for (c in call) {
             console.log(c);
           }*/
-          const video = document.createElement('video')
+          const video = document.createElement('video');
           call.on('stream', userVideoStream => {
 						let compare;
             console.log('STARTING STREAM')
@@ -125,7 +126,7 @@ popup.addEventListener('click', (event) => {
         )
       })
     })
-}
+}} else {}
 }, true)
 
 socket.on('movie-time', () => {
@@ -151,7 +152,7 @@ function connectToNewUser(userId, stream) {
 	let compare = 1;
 	console.log('movieUser exists not')
 }
-  const video = document.createElement('video')
+  const video = document.createElement('video');
   call.on('stream', (userVideoStream, compare) => {
     console.log('CONNECTONG TP NRW USER');
 		if (typeof(movieUser) != 'undefined' && compare == 0) {
@@ -163,7 +164,7 @@ function connectToNewUser(userId, stream) {
 		}
 })
   call.on('close', () => {
-    video.remove()
+    video.parentNode.remove()
   })
   peers[userId] = call
 }
@@ -179,13 +180,51 @@ function addVideoStreamMovie(video, stream) {
 
 function addVideoStreamPeep(video, stream) {
   video.srcObject = stream;
+	video.className = 'peepVideo';
   video.addEventListener("loadedmetadata", () => {
     video.play();
   });
-  video.classList.add('peep');
-	//video.classList.add(color);
-  peeps.appendChild(video);
+	const peepContainer = document.createElement('div');
+  peepContainer.classList.add('peep');
+  peeps.appendChild(peepContainer);
+	const contextMenu = document.createElement('div');
+	contextMenu.classList.add('context', 'container');
+	const slider = document.createElement('input');
+	slider.classList.add('volume');
+	slider.type = "range";
+	slider.min = "0.0";
+	slider.max = "1.0";
+	slider.value = "0.5"
+	slider.step = "0.01";
+	slider.addEventListener("input", () => {
+		video.volume = slider.value;
+		console.log('VOLUME: ' + slider.value);
+	})
+
+	peepContainer.appendChild(video);
+	contextMenu.appendChild(slider);
+	peepContainer.appendChild(contextMenu);
 }
+
+peeps.addEventListener("click", () => {
+	if (event.target.classList.contains('peepVideo')) {
+		event.target.nextSibling.id = 'peep';
+		console.log(event.target.nextSibling)
+		event.target.nextSibling.classList.toggle('contextActive');
+		console.log('clicked');
+		document.querySelectorAll('.context').forEach(c => {
+			if (c.id == 'peep') {
+				console.log(c + 'clickedX');
+				return;
+			} else {
+				console.log(c + 'clickedY');
+				c.classList.remove('contextActive');
+			}
+		})
+		event.target.nextSibling.id = '';
+	}
+})
+
 let movieState = 0;
 function movieTime(movieStateServer) {
 /*	if (movieStateServer == 0) {

@@ -192,6 +192,7 @@
     transition: all 1s;
   }
   .peep {
+    position: relative;
     margin-top: 10%;
     margin-bottom: 10%;
     margin-left: 1.75vw;
@@ -202,7 +203,31 @@
     border: 1px solid rgba(255,255,255,0.5);
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
     transition: all 1s;
+    z-index: 1;
   }
+  .peep video {
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+  }
+  .context {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    border: 1px solid black;
+    background: white;
+    height: 200%;
+    top: -50%;
+    left: 120%;
+    transition: all 0.25s;
+  }
+  .contextActive {
+    visibility:visible;
+    opacity: 1;
+  }
+  .context input {
+  }
+
   .peepsActive {
     background: rgba(255,255,255,0.15);
     left: -5%;
