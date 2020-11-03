@@ -1,0 +1,381 @@
+* {
+  box-sizing: border-box;
+  font-family: "Roboto";
+}
+.load {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #333;
+  opacity: 0;
+  transition: all 0.25s linear 0.25s;
+}
+.loading {
+  opacity: 1;
+}
+.loader {
+  background: #333;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100000;
+  transition: all 1s;
+  opacity: 1;
+  color: white;
+
+}
+.loaded {
+  opacity: 0;
+  }
+body {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mainWrapper {
+  padding: 2.5%;
+  background: rgba(0,0,0,0);
+  width: 100vw;
+  height: 100vh;
+  transition:all 3s;
+}
+.container {
+  display: flex;
+}
+.cover {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0,0,0,0.9);
+  transition: all 3s;
+}
+.coverUp {
+  top: -100%;
+}
+.popup {
+  border-radius: 5px;
+  background: #333;
+  color: white;
+  z-index: 10000;
+  flex-direction: column;
+  position: absolute;
+  width: 50vw;
+  height: 40vh;
+  left: 25%;
+  top: 25%;
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+.popupOptions {
+  height: 50%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+.option {
+  z-index: 1;
+  position: relative;
+  border-radius: 5px;
+  width: 25%;
+  height: 50%;
+  border: 1px solid rgba(255,255,255,0.5);
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s;
+}
+.option p {
+  padding: 10% 15%;
+  text-align: center;
+}
+.option div {
+  z-index: 10;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+.popupClicked {
+  display: none;
+}
+.popupText {
+  flex-direction: column;
+  height: 60%;
+  width: 100%;
+}
+.popupMoreText {
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+.colors {
+  justify-content: center;
+  align-items: center;
+  height: 40%;
+  width: 100%;
+}
+.color {
+  border-radius: 5px;
+  width: 1em;
+  height: 1em;
+  margin: 2.5%;
+  transition: all 0.25s;
+}
+/*----Colors----*/
+.red {
+  background: rgb(227, 0, 0);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.blue {
+  background: rgb(0,0,255);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.purple {
+  background: rgb(138,43,226);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.orange {
+  background: rgb(255, 69, 0);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.green {
+  background: rgb(0, 128, 0);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.yellow {
+  background: rgb(255,255,0);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.turq {
+  background: rgb(0,206,209);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.pink {
+  background: #FF00FF;
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.colorPicked {
+  box-shadow: 0 0 5px white;
+}
+.movieInactive {
+  background: grey;
+  color: rgba(255,0,0,0.5);
+  pointer-events: none;
+}
+
+.peepsContainer {
+  z-index: 2;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: absolute;
+  margin-top: 5%;
+  padding-top: 1.25%;
+  padding-right: 0;
+  left: 1.5%;
+  height: 80%;
+  width: 5vw;
+  border-radius: 5px;
+  box-shadow: 3px 3px 3px rgba(0,0,0,0.5);
+  background: #333;
+  transition: all 1s;
+}
+.peep {
+  position: relative;
+  margin-top: 10%;
+  margin-bottom: 10%;
+  margin-left: 1.75vw;
+  border-radius: 30%;
+  height: 0.95em;
+  width: 0.95em;
+  background: rgba(48,95,255,1);
+  border: 1px solid rgba(255,255,255,0.5);
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+  transition: all 1s;
+  z-index: 1;
+}
+.peep video {
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+.context {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  border: 1px solid black;
+  background: white;
+  height: 200%;
+  top: -50%;
+  left: 120%;
+  transition: all 0.25s;
+}
+.contextActive {
+  visibility:visible;
+  opacity: 1;
+}
+.context input {
+}
+
+.peepsActive {
+  background: rgba(255,255,255,0.15);
+  left: -5%;
+}
+.peepsActive .peep {
+  background: rgba(48, 95, 255, 0.75);
+  margin-left: 3vw;
+
+}
+.peepInactive {
+  opacity: 0.5;
+}
+.movieButton {
+  position: absolute;
+  margin-left: 1.75vw;
+  bottom: 6.25%;
+  height: 0.95em;
+  width: 0.95em;
+  background: red;
+  border-radius: 50%;
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+  border: 2px solid rgba(255,255,255,0.5);
+  transition: all 1s;
+}
+.movieButtonMovie {
+  margin-left: 3vw;
+}
+.movieTime {
+  background: rgba(0,0,0,0.9);
+}
+#theShow {
+  background: white;
+  z-index: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.movie {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fa-tv {
+  color: black;
+  text-shadow: 0 0 3px white;
+  position: relative;
+}
+
+.tvEffect {
+  top: 5%;
+  left: 7%;
+  position: absolute;
+  width: 85%;
+  height: 70%;
+  background: #333;
+}
+@keyframes flicker {
+0% {
+opacity: 0.27861;
+}
+5% {
+opacity: 0.34769;
+}
+10% {
+opacity: 0.23604;
+}
+15% {
+opacity: 0.90626;
+}
+20% {
+opacity: 0.18128;
+}
+25% {
+opacity: 0.83891;
+}
+30% {
+opacity: 0.65583;
+}
+35% {
+opacity: 0.67807;
+}
+40% {
+opacity: 0.26559;
+}
+45% {
+opacity: 0.84693;
+}
+50% {
+opacity: 0.96019;
+}
+55% {
+opacity: 0.08594;
+}
+60% {
+opacity: 0.20313;
+}
+65% {
+opacity: 0.71988;
+}
+70% {
+opacity: 0.53455;
+}
+75% {
+opacity: 0.37288;
+}
+80% {
+opacity: 0.71428;
+}
+85% {
+opacity: 0.70419;
+}
+90% {
+opacity: 0.7003;
+}
+95% {
+opacity: 0.36108;
+}
+100% {
+opacity: 0.24387;
+}
+}
+.tvBackground {
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  animation: flicker 0.1s infinite;
+}
+.tvColor {
+  width: 16.66%;
+}
+.tvColor:nth-child(1) {
+  background: white;
+  box-shadow: -2px 0px 5px -0.5px white, 0px 2px 5px -0.5px white, 0px -2px 5px -0.5px white;
+}
+.tvColor:nth-child(2) {
+  background: yellow;
+  box-shadow: 0px 2px 5px -0.5px yellow, 0px -2px 5px -0.5px yellow;
+
+}
+.tvColor:nth-child(3) {
+  background: rgb(92, 180, 255);
+  box-shadow: 0px 2px 5px -0.5px rgb(92, 180, 255), 0px -2px 5px -0.5px rgb(92, 180, 255);
+}
+.tvColor:nth-child(4) {
+  background: rgb(13, 255, 58);
+  box-shadow: 0px 2px 5px -0.5px rgb(13, 255, 58), 0px -2px 5px -0.5px rgb(13, 255, 58);
+}
+.tvColor:nth-child(5) {
+  background: hotpink;
+  box-shadow: 0px 2px 5px -0.5px hotpink, 0px -2px 5px -0.5px hotpink;
+}
+.tvColor:nth-child(6) {
+  background: red;
+  box-shadow: 2px 0px 5px -0.5px red, 0px 2px 5px -0.5px white, 0px -2px 5px -0.5px red;
+}

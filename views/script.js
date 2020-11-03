@@ -10,14 +10,15 @@ const myPeer = new Peer(undefined, {
 	secure: "true",
 	port: "443"
 });
-document.querySelector('.loader').classList.remove('loading');
+document.querySelector('.load').classList.remove('loading');
 
 window.onload = () => {
-	document.querySelector('.loader').classList.add('loaded');
-	document.querySelector('.loader').addEventListener("transitionend", () => {
-		document.querySelector('.loaded').style.display = "none";
-	})
-
+	setTimeout(() => {
+		document.querySelector('.loader').classList.add('loaded');
+		document.querySelector('.loader').addEventListener("transitionend", () => {
+			document.querySelector('.loaded').style.display = "none";
+		})
+	}, 1000)
 }
 socket.on('movie-check', userId => {
 	movieUser = userId;
@@ -31,27 +32,13 @@ myVideo.muted = true
 const peers = {}
 
 popup.addEventListener('click', (event) => {
-/*	if (navigator.userAgent.indexOf("Chrome") !== -1) {
-		mic = webkitGetUserMedia;
-	} else if (navigator.userAgent.indexOf("Firefox") !== -1) {
-		mic = mozGetUserMedia;
-	} else {
-		mic = getUserMedia;
-	}
-
-	if (navigator.userAgent.indexOf("Chrome") !== -1) {
-		display = webkitGetDisplayMedia;
-	} else if (navigator.userAgent.indexOf("Firefox") !== -1) {
-		display = mozGetDisplayMedia;
-	} else {
-		display = getDisplayMedia;
-	}*/
-	//var getUserMedia = navigator.mediaDevices.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia;
-	//var getDisplayyMedia = navigator.mediaDevices.getDisplayMedia || navigator.mediaDevices.webkitGetDisplayMedia || navigator.mediaDevices.mozGetDisplayMedia;
 
   if (event.target.classList.contains('screen')) {
     videoSrc = 0;
     socket.emit('movie');
+		navigator.mediaDevices.getDisplayMedia = navigator.mediaDevices.getDisplayMedia ||
+	navigator.mediaDevices.webkitGeDisplayMedia ||
+	navigator.mediaDevices.mozGetDisplayMedia || navigator.mediaDevices.msGetDisplayMedia;
     navigator.mediaDevices.getDisplayMedia({
       video: true,
       audio: true
@@ -80,7 +67,9 @@ popup.addEventListener('click', (event) => {
 }
     else if (event.target.classList.contains('mic')) {
       videoSrc = 1;
-			if (navigator.mediaDevices.getUserMedia != undefined) {
+			navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia ||
+		navigator.mediaDevices.webkitGetUserMedia ||
+		navigator.mediaDevices.mozGetUserMedia || navigator.mediaDevices.msGetUserMedia;
       navigator.mediaDevices.getUserMedia({
         video: false,
         audio: true
@@ -92,9 +81,6 @@ popup.addEventListener('click', (event) => {
           console.log('STARTING STREAM')
           call.answer(stream)
           console.log('CONNECTION ID: ' + call.peer)
-          /*for (c in call) {
-            console.log(c);
-          }*/
           const video = document.createElement('video');
           call.on('stream', userVideoStream => {
 						let compare;
@@ -126,11 +112,51 @@ popup.addEventListener('click', (event) => {
         )
       })
     })
-}} else {}
+}     else if (event.target.classList.contains('noChat')) {
+      videoSrc = 1;
+        addVideoStreamPeep(myVideo, undefined)
+				popup.classList.add('popupClicked');
+
+        myPeer.on('call', call => {
+          console.log('STARTING STREAM')
+          call.answer()
+          console.log('CONNECTION ID: ' + call.peer)
+          const video = document.createElement('video');
+          call.on('stream', userVideoStream => {
+						let compare;
+            console.log('STARTING STREAM')
+						console.log('CALL.PEER: ' + `'${call.peer}'`);
+						console.log('MOVIEUSER: ' + `'${movieUser}'`);
+						if (typeof(movieUser) != 'undefined') {
+						compare = movieUser.localeCompare(call.peer);
+						console.log('CALL = PEER?: ' + compare);
+					} else {
+						compare = 1;
+					}
+            if (compare == 0) {
+							console.log('STARTING movie')
+              addVideoStreamMovie(video, userVideoStream);
+            } else {
+							console.log('STARTING peep')
+              addVideoStreamPeep(video, userVideoStream);
+            }
+          })
+      })
+      socket.on('user-connected', userId => {
+				console.log('connecting ' + userId);
+
+        setTimeout(function ()
+          {
+            connectToNewUser(userId, stream);
+          },5000
+        )
+      })
+
+}
 }, true)
 
-socket.on('movie-time', () => {
-	movieTime();
+socket.on('movie-times', movieStateServer => {
+	movieTime(movieStateServer);
 }
 )
 socket.on('user-disconnected', userId => {
@@ -194,7 +220,7 @@ function addVideoStreamPeep(video, stream) {
 	slider.type = "range";
 	slider.min = "0.0";
 	slider.max = "1.0";
-	slider.value = "0.5"
+	slider.value = "0.5";
 	slider.step = "0.01";
 	slider.addEventListener("input", () => {
 		video.volume = slider.value;
@@ -222,30 +248,46 @@ peeps.addEventListener("click", () => {
 			}
 		})
 		event.target.nextSibling.id = '';
+	} else if (event.target.classList.contains('peep"Video') == false){
+		document.querySelectorAll('.context').forEach(c => {
+				c.classList.remove('contextActive');
+			})
 	}
 })
 
-let movieState = 0;
 function movieTime(movieStateServer) {
-/*	if (movieStateServer == 0) {
-	peeps.classList.toggle('peepsActive');
-	document.querySelector('.mainWrapper').classList.add('movieTime');
-	document.querySelector('.movieButton').classList.add('movieButtonMovie');
-	//document.querySelector('.cover').classList.add('coverUp');
-} if (movieStateServer == 1) {
+	if (movieStateServer == 0) {
+	peeps.classList.remove('peepsActive');
 	document.querySelector('.mainWrapper').classList.remove('movieTime');
 	document.querySelector('.movieButton').classList.remove('movieButtonMovie');
-//	document.querySelector('.cover').classList.remove('coverUp');
-}*/
-peeps.classList.toggle('peepsActive');
-document.querySelector('.mainWrapper').classList.toggle('movieTime');
-document.querySelector('.movieButton').classList.toggle('movieButtonMovie');
+} else if (movieStateServer == 1) {
+	peeps.classList.add('peepsActive');
+	document.querySelector('.mainWrapper').classList.add('movieTime');
+	document.querySelector('.movieButton').classList.add('movieButtonMovie');
+}
+}
+
+let movieState = 0;
+function localMovieTime() {
+	if (movieState == 0) {
+	peeps.classList.remove('peepsActive');
+	document.querySelector('.mainWrapper').classList.remove('movieTime');
+	document.querySelector('.movieButton').classList.remove('movieButtonMovie');
+} else if (movieState == 1) {
+	peeps.classList.add('peepsActive');
+	document.querySelector('.mainWrapper').classList.add('movieTime');
+	document.querySelector('.movieButton').classList.add('movieButtonMovie');
+}
 }
 
 document.querySelector('.movieButton').addEventListener("click", () => {
-	socket.emit('movie-time');
-	//movieTime(movieStateServer);
-	movieTime()
+	if (movieState == 0) {
+	movieState = 1;
+} else if (movieState == 1) {
+	movieState = 0;
+}
+	socket.emit('movie-time', movieState);
+	localMovieTime()
 })
 
 let color;
