@@ -90,6 +90,7 @@ body {
   align-items: center;
   justify-content: center;
   transition: all 0.5s;
+  cursor: pointer;
 }
 .option p {
   padding: 10% 15%;
@@ -169,6 +170,7 @@ body {
   background: grey;
   color: rgba(255,0,0,0.5);
   pointer-events: none;
+  cursor: not-allowed !important;
 }
 
 .peepsContainer {

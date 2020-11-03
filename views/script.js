@@ -33,7 +33,7 @@ const peers = {}
 
 popup.addEventListener('click', (event) => {
 
-  if (event.target.classList.contains('screen')) {
+  if (event.target.id == 'screen' || event.target.classList.contains('screen')) {
     videoSrc = 0;
     socket.emit('movie');
 		navigator.mediaDevices.getDisplayMedia = navigator.mediaDevices.getDisplayMedia ||
@@ -65,7 +65,7 @@ popup.addEventListener('click', (event) => {
     })
   })
 }
-    else if (event.target.classList.contains('mic')) {
+    else if (event.target.id == 'mic' || event.target.classList.contains('mic')) {
       videoSrc = 1;
 			navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia ||
 		navigator.mediaDevices.webkitGetUserMedia ||
@@ -112,7 +112,7 @@ popup.addEventListener('click', (event) => {
         )
       })
     })
-}     else if (event.target.classList.contains('noChat')) {
+}     else if (event.target.id == 'noChat' || event.target.classList.contains('noChat')) {
       videoSrc = 1;
         addVideoStreamPeep(myVideo, undefined)
 				popup.classList.add('popupClicked');
