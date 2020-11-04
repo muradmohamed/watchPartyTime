@@ -15,6 +15,7 @@ app.get('/:room', (req, res) => {
 })
 let movieUser;
 let roomData = {};
+let movieStateServer;
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
     console.log(userId + ' joined');
@@ -23,7 +24,7 @@ io.on('connection', socket => {
       console.log('ROOMDATA: ' + roomData[roomId]);
     }
     if ((roomData[roomId].hasOwnProperty('movieId'))) {
-      socket.emit('movie-check', movieUser);
+      socket.emit('movie-check', movieUser, movieStateServer);
     }
     socket.join(roomId)
     socket.to(roomId).broadcast.emit('user-connected', userId)

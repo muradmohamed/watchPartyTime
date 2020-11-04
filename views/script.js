@@ -20,13 +20,15 @@ window.onload = () => {
 		})
 	}, 1000)
 }
-socket.on('movie-check', userId => {
+socket.on('movie-check', (userId, movieStateServer) => {
 	movieUser = userId;
   console.log(userId);
   console.log('MOVIE CHECK');
   document.getElementById('screen').classList.add('movieInactive');
 	console.log('MOVIEUSER: ' + movieUser);
+	movieTime(movieStateServer);
 })
+
 const myVideo = document.createElement('video')
 myVideo.muted = true
 const peers = {}
