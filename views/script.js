@@ -1,7 +1,4 @@
 const socket = io("/");
-let videoSrc;
-let movieUser;
-let movietime;
 const videoGrid = document.getElementById("theShow");
 const peeps = document.querySelector('.peepsContainer');
 const popup = document.querySelector('.popup');
@@ -11,7 +8,6 @@ const myPeer = new Peer(undefined, {
 	port: "443"
 });
 document.querySelector('.load').classList.remove('loading');
-
 window.onload = () => {
 	setTimeout(() => {
 		document.querySelector('.loader').classList.add('loaded');
@@ -20,142 +16,145 @@ window.onload = () => {
 		})
 	}, 1000)
 }
-socket.on('movie-check', (userId, movieStateServer) => {
-	movieUser = userId;
-  console.log(userId);
+let videoSrc;
+let movieUser;
+let movietime;
+
+socket.on('movie-check', (movieUserServer, movieStateServer, clientsList) => {
+	movieUser = movieUserServer;
   console.log('MOVIE CHECK');
   document.getElementById('screen').classList.add('movieInactive');
-	console.log('MOVIEUSER: ' + movieUser);
-	movieTime(movieStateServer);
-})
+	movieTime(movieStateServer)
 
 const myVideo = document.createElement('video')
 myVideo.muted = true
 const peers = {}
+	if (clientsList <= 1) {
+		videoSrc = 0;
+		socket.emit('movie');
 
-popup.addEventListener('click', (event) => {
-
-  if (event.target.id == 'screen' || event.target.classList.contains('screen')) {
-    videoSrc = 0;
-    socket.emit('movie');
 		navigator.mediaDevices.getDisplayMedia = navigator.mediaDevices.getDisplayMedia ||
 	navigator.mediaDevices.webkitGeDisplayMedia ||
 	navigator.mediaDevices.mozGetDisplayMedia || navigator.mediaDevices.msGetDisplayMedia;
-    navigator.mediaDevices.getDisplayMedia({
-      video: true,
-      audio: true
-    }).then(stream => {
-      addVideoStreamMovie(myVideo, stream)
+		navigator.mediaDevices.getDisplayMedia({
+			video: true,
+			audio: true
+		}).then(stream => {
+			addVideoStreamMovie(myVideo, stream)
 			popup.classList.add('popupClicked');
-      myPeer.on('call', call => {
-        console.log('STARTING STREAM')
-        call.answer(stream)
+			myPeer.on('call', call => {
+				console.log('STARTING STREAM')
+				call.answer(stream)
 				console.log('caught stream')
-        const video = document.createElement('video')
-        call.on('stream', userVideoStream => {
+				const video = document.createElement('video')
+				call.on('stream', userVideoStream => {
 					console.log('adding peep');
 					addVideoStreamPeep(video, userVideoStream);
-        })
-    })
-    socket.on('user-connected', userId => {
+				})
+		})
+		socket.on('user-connected', userId => {
 			console.log('connecting ' + userId);
-      setTimeout(function ()
-        {
-          connectToNewUser(userId, stream);
-        },5000
-      )
-    })
-  })
+			setTimeout(function ()
+				{
+					connectToNewUser(userId, stream);
+				},5000
+			)
+		})
+	})
+} else {
+	popup.addEventListener('click', (event) => {
+	     if (event.target.id == 'mic' || event.target.classList.contains('mic')) {
+	      videoSrc = 1;
+				navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia ||
+			navigator.mediaDevices.webkitGetUserMedia ||
+			navigator.mediaDevices.mozGetUserMedia || navigator.mediaDevices.msGetUserMedia;
+	      navigator.mediaDevices.getUserMedia({
+	        video: false,
+	        audio: true
+	      }).then(stream => {
+	        addVideoStreamPeep(myVideo, stream)
+					popup.classList.add('popupClicked');
+
+	        myPeer.on('call', call => {
+	          console.log('STARTING STREAM')
+	          call.answer(stream)
+	          console.log('CONNECTION ID: ' + call.peer)
+	          const video = document.createElement('video');
+	          call.on('stream', userVideoStream => {
+							let compare;
+	            console.log('STARTING STREAM')
+							console.log('CALL.PEER: ' + `'${call.peer}'`);
+							console.log('MOVIEUSER: ' + `'${movieUser}'`);
+							if (typeof(movieUser) != 'undefined') {
+							compare = movieUser.localeCompare(call.peer);
+							console.log('CALL = PEER?: ' + compare);
+						} else {
+							compare = 1;
+						}
+	            if (compare == 0) {
+								console.log('STARTING movie')
+	              addVideoStreamMovie(video, userVideoStream);
+	            } else {
+								console.log('STARTING peep')
+	              addVideoStreamPeep(video, userVideoStream);
+	            }
+	          })
+	      })
+	      socket.on('user-connected', userId => {
+					console.log('connecting ' + userId);
+
+	        setTimeout(function ()
+	          {
+	            connectToNewUser(userId, stream);
+	          },5000
+	        )
+	      })
+	    })
+	}     else if (event.target.id == 'noChat' || event.target.classList.contains('noChat')) {
+	      videoSrc = 1;
+	        addVideoStreamPeep(myVideo, undefined)
+					popup.classList.add('popupClicked');
+
+	        myPeer.on('call', call => {
+	          console.log('STARTING STREAM')
+	          call.answer()
+	          console.log('CONNECTION ID: ' + call.peer)
+	          const video = document.createElement('video');
+	          call.on('stream', userVideoStream => {
+							let compare;
+	            console.log('STARTING STREAM')
+							console.log('CALL.PEER: ' + `'${call.peer}'`);
+							console.log('MOVIEUSER: ' + `'${movieUser}'`);
+							if (typeof(movieUser) != 'undefined') {
+							compare = movieUser.localeCompare(call.peer);
+							console.log('CALL = PEER?: ' + compare);
+						} else {
+							compare = 1;
+						}
+	            if (compare == 0) {
+								console.log('STARTING movie')
+	              addVideoStreamMovie(video, userVideoStream);
+	            } else {
+								console.log('STARTING peep')
+	              addVideoStreamPeep(video, userVideoStream);
+	            }
+	          })
+	      })
+	      socket.on('user-connected', userId => {
+					console.log('connecting ' + userId);
+
+	        setTimeout(function ()
+	          {
+	            connectToNewUser(userId, stream);
+	          },5000
+	        )
+	      })
+
+	}
+	}, true)
 }
-    else if (event.target.id == 'mic' || event.target.classList.contains('mic')) {
-      videoSrc = 1;
-			navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia ||
-		navigator.mediaDevices.webkitGetUserMedia ||
-		navigator.mediaDevices.mozGetUserMedia || navigator.mediaDevices.msGetUserMedia;
-      navigator.mediaDevices.getUserMedia({
-        video: false,
-        audio: true
-      }).then(stream => {
-        addVideoStreamPeep(myVideo, stream)
-				popup.classList.add('popupClicked');
+})
 
-        myPeer.on('call', call => {
-          console.log('STARTING STREAM')
-          call.answer(stream)
-          console.log('CONNECTION ID: ' + call.peer)
-          const video = document.createElement('video');
-          call.on('stream', userVideoStream => {
-						let compare;
-            console.log('STARTING STREAM')
-						console.log('CALL.PEER: ' + `'${call.peer}'`);
-						console.log('MOVIEUSER: ' + `'${movieUser}'`);
-						if (typeof(movieUser) != 'undefined') {
-						compare = movieUser.localeCompare(call.peer);
-						console.log('CALL = PEER?: ' + compare);
-					} else {
-						compare = 1;
-					}
-            if (compare == 0) {
-							console.log('STARTING movie')
-              addVideoStreamMovie(video, userVideoStream);
-            } else {
-							console.log('STARTING peep')
-              addVideoStreamPeep(video, userVideoStream);
-            }
-          })
-      })
-      socket.on('user-connected', userId => {
-				console.log('connecting ' + userId);
-
-        setTimeout(function ()
-          {
-            connectToNewUser(userId, stream);
-          },5000
-        )
-      })
-    })
-}     else if (event.target.id == 'noChat' || event.target.classList.contains('noChat')) {
-      videoSrc = 1;
-        addVideoStreamPeep(myVideo, undefined)
-				popup.classList.add('popupClicked');
-
-        myPeer.on('call', call => {
-          console.log('STARTING STREAM')
-          call.answer()
-          console.log('CONNECTION ID: ' + call.peer)
-          const video = document.createElement('video');
-          call.on('stream', userVideoStream => {
-						let compare;
-            console.log('STARTING STREAM')
-						console.log('CALL.PEER: ' + `'${call.peer}'`);
-						console.log('MOVIEUSER: ' + `'${movieUser}'`);
-						if (typeof(movieUser) != 'undefined') {
-						compare = movieUser.localeCompare(call.peer);
-						console.log('CALL = PEER?: ' + compare);
-					} else {
-						compare = 1;
-					}
-            if (compare == 0) {
-							console.log('STARTING movie')
-              addVideoStreamMovie(video, userVideoStream);
-            } else {
-							console.log('STARTING peep')
-              addVideoStreamPeep(video, userVideoStream);
-            }
-          })
-      })
-      socket.on('user-connected', userId => {
-				console.log('connecting ' + userId);
-
-        setTimeout(function ()
-          {
-            connectToNewUser(userId, stream);
-          },5000
-        )
-      })
-
-}
-}, true)
 
 socket.on('movie-times', movieStateServer => {
 	movieTime(movieStateServer);

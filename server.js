@@ -8,46 +8,52 @@ app.set('view engine', 'ejs')
 app.use(express.static('views'))
 
 app.get('/', (req, res) => {
+  res.render('home.ejs');
+})
+app.get('/room', (req, res) => {
   res.redirect(`/${uuidV4()}`)
 })
 app.get('/:room', (req, res) => {
-  res.render('room', { roomId: req.params.room })
+  res.render('room.ejs', { roomId: req.params.room })
 })
-let movieUser;
-let roomData = {};
+
 let movieStateServer;
+let movieUserServer;
+
 io.on('connection', socket => {
-  socket.on('join-room', (roomId, userId) => {
-    console.log(userId + ' joined');
-    if (!(roomData.hasOwnProperty(roomId))) {
-      roomData[roomId] = roomId;
-      console.log('ROOMDATA: ' + roomData[roomId]);
-    }
-    if ((roomData[roomId].hasOwnProperty('movieId'))) {
-      socket.emit('movie-check', movieUser, movieStateServer);
-    }
+  socket.on('join-room', async(roomId, userId) => {
     socket.join(roomId)
+    const clients = await getRoomClients(roomId);
+  //  let movieUserServer = userId;
+    let clientsList = clients.length;
+    console.log('movieUserServer: ' + movieUserServer)
+    socket.emit('movie-check', movieUserServer, movieStateServer, clientsList);
+
+    console.log('CLIENTS: ' + clients);
+
     socket.to(roomId).broadcast.emit('user-connected', userId)
+
     socket.on('disconnect', () => {
       socket.to(roomId).broadcast.emit('user-disconnected', userId)
     })
 
-  socket.on('movie', () => {
-      movieUser = userId;
-      if (!(roomData[roomId].hasOwnProperty('movie'))) {
-        roomData[roomId] = {};
-        roomData[roomId].movieId = userId;
-        console.log('saved movie host: ' + movieUser);
-      }
-    })
     socket.on('movie-time', (movieState) => {
-      let movieStateServer = movieState
+      movieStateServer = movieState
       socket.to(roomId).emit('movie-times', movieStateServer)
     })
-  /*  socket.on('movie-def', () => {
-      socket.emit('movie-check', movieUser);
-    })*/
+
+    socket.on('movie', () => {
+      movieUserServer = userId;
+    })
   })
 })
+
+function getRoomClients(roomId) {
+  return new Promise((resolve, reject) => {
+    io.of('/').in(roomId).clients((error, clients) => {
+      resolve(clients);
+    });
+  });
+}
 const PORT = process.env.PORT || 3000;
 server.listen(PORT);
