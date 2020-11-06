@@ -17,20 +17,17 @@ app.get('/:room', (req, res) => {
   res.render('room.ejs', { roomId: req.params.room })
 })
 
-let movieStateServer;
+let movieStateServer = 0;
 let movieUserServer;
 
 io.on('connection', socket => {
   socket.on('join-room', async(roomId, userId) => {
     socket.join(roomId)
     const clients = await getRoomClients(roomId);
-  //  let movieUserServer = userId;
     let clientsList = clients.length;
     console.log('movieUserServer: ' + movieUserServer)
     socket.emit('movie-check', movieUserServer, movieStateServer, clientsList);
-
     console.log('CLIENTS: ' + clients);
-
     socket.to(roomId).broadcast.emit('user-connected', userId)
 
     socket.on('disconnect', () => {

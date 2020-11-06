@@ -23,8 +23,8 @@ let movietime;
 socket.on('movie-check', (movieUserServer, movieStateServer, clientsList) => {
 	movieUser = movieUserServer;
   console.log('MOVIE CHECK');
-  document.getElementById('screen').classList.add('movieInactive');
 	movieTime(movieStateServer)
+	movieState = movieStateServer;
 
 const myVideo = document.createElement('video')
 myVideo.muted = true
@@ -258,26 +258,30 @@ peeps.addEventListener("click", () => {
 
 function movieTime(movieStateServer) {
 	if (movieStateServer == 0) {
-	peeps.classList.remove('peepsActive');
+	document.querySelector('.cover').classList.remove('coverUp');
+	document.querySelector('.peepsWrapper').classList.remove('peepsActive');
 	document.querySelector('.mainWrapper').classList.remove('movieTime');
-	document.querySelector('.movieButton').classList.remove('movieButtonMovie');
+	document.querySelector('.peepsContainer').classList.remove('movieButtonMovie');
 } else if (movieStateServer == 1) {
-	peeps.classList.add('peepsActive');
+	document.querySelector('.cover').classList.add('coverUp');
+	document.querySelector('.peepsWrapper').classList.add('peepsActive');
 	document.querySelector('.mainWrapper').classList.add('movieTime');
-	document.querySelector('.movieButton').classList.add('movieButtonMovie');
+	document.querySelector('.peepsContainer').classList.add('movieButtonMovie');
 }
 }
 
 let movieState = 0;
 function localMovieTime() {
 	if (movieState == 0) {
-	peeps.classList.remove('peepsActive');
+		document.querySelector('.cover').classList.remove('coverUp');
+	document.querySelector('.peepsWrapper').classList.remove('peepsActive');
 	document.querySelector('.mainWrapper').classList.remove('movieTime');
-	document.querySelector('.movieButton').classList.remove('movieButtonMovie');
+	document.querySelector('.peepsContainer').classList.remove('movieButtonMovie');
 } else if (movieState == 1) {
-	peeps.classList.add('peepsActive');
+	document.querySelector('.cover').classList.add('coverUp');
+	document.querySelector('.peepsWrapper').classList.add('peepsActive');
 	document.querySelector('.mainWrapper').classList.add('movieTime');
-	document.querySelector('.movieButton').classList.add('movieButtonMovie');
+	document.querySelector('.peepsContainer').classList.add('movieButtonMovie');
 }
 }
 

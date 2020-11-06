@@ -5,14 +5,18 @@
     box-sizing: border-box;
     font-family: 'Roboto';
   }
+  html {
+    overflow-x: hidden;
+
+  }
   .container {
     display: flex;
   }
   body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
   }
   .loader {
     z-index: 100;
@@ -27,6 +31,7 @@
   }
   .topNav {
     height: 10vh;
+    width: 100vw;
     background: #333;
     align-items: center;
     justify-content: space-between;
@@ -56,77 +61,11 @@
     height: 70%;
     background: #333;
   }
-  @keyframes flicker {
-  0% {
-  opacity: 0.27861;
-  }
-  5% {
-  opacity: 0.34769;
-  }
-  10% {
-  opacity: 0.23604;
-  }
-  15% {
-  opacity: 0.90626;
-  }
-  20% {
-  opacity: 0.18128;
-  }
-  25% {
-  opacity: 0.83891;
-  }
-  30% {
-  opacity: 0.65583;
-  }
-  35% {
-  opacity: 0.67807;
-  }
-  40% {
-  opacity: 0.26559;
-  }
-  45% {
-  opacity: 0.84693;
-  }
-  50% {
-  opacity: 0.96019;
-  }
-  55% {
-  opacity: 0.08594;
-  }
-  60% {
-  opacity: 0.20313;
-  }
-  65% {
-  opacity: 0.71988;
-  }
-  70% {
-  opacity: 0.53455;
-  }
-  75% {
-  opacity: 0.37288;
-  }
-  80% {
-  opacity: 0.71428;
-  }
-  85% {
-  opacity: 0.70419;
-  }
-  90% {
-  opacity: 0.7003;
-  }
-  95% {
-  opacity: 0.36108;
-  }
-  100% {
-  opacity: 0.24387;
-  }
-  }
   .tvBackground {
     width: 100%;
     height: 100%;
     opacity: 1;
     box-shadow: 0 0 5px 3px rgba(255,255,255,0.5);
-    /*animation: flicker 0.1s infinite;*/
   }
   .tvColor {
     width: 16.66%;
@@ -156,6 +95,9 @@
     background: red;
     box-shadow: 2px 0px 5px -0.5px red, 0px 2px 5px -0.5px white, 0px -2px 5px -0.5px red;
   }
+  .topNavRight {
+    justify-content: flex-end;
+  }
   .shareButton {
     cursor: pointer;
     position: relative;
@@ -163,7 +105,7 @@
     align-items: center;
     border: 2px solid rgba(255,255,255,0.5);
     border-radius: 3px;
-    width: 50%;
+    width: 25%;
     height: 75%;
     background: rgb(52,0,159);
     color: white;
@@ -178,8 +120,65 @@
     background: rgba(255,255,255,0.5);
     transition: all 0.15s;
   }
-  .shareButton:hover .shareButtonEffect {
+  .menuClick {
     right: 0;
+  }
+  .menu {
+    overflow: hidden;
+    position: absolute;
+    justify-content: center;
+    right: -25%;
+    height: 90vh;
+    width: 25vw;
+    background: #333;
+    transition: all 0.25s;
+  }
+  .menuInner {
+    padding-top: 25%;
+    margin-right: 10%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 75%;
+    height: 100%;
+  }
+  .menuOption {
+    border-bottom: 1px solid rgba(255,255,255,0.25);
+    position: relative;
+    cursor: pointer;
+    font-size: 1.25em;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+    color: white;
+    transition: background 0.25s;
+  }
+  .howWorks {
+    visibility: hidden;
+    width: 100%;
+    height: 600%;
+    background: rgb(82, 82, 82);
+  }
+  .collActive {
+    background: rgba(255,255,255,0.5);
+  }
+  .collapsible {
+    padding: 5% 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s;
+    color: white;
+    text-align: center;
+  }
+  .menuActive {
+    transform: translateX(-100%);
+  }
+  .mainWrapper {
+    overflow-x: hidden;
+    width: 100%;
+    height: auto;
+
   }
   .mainLeft {
     flex-direction: column;
@@ -194,7 +193,6 @@
     background: url('cinema.svg');
     background-size: cover;
     filter: drop-shadow( 10px -10px 30px rgba(0, 0, 0, 0.5)) contrast(110%);
-
   }
   .mainText {
     height: 40%;
@@ -228,7 +226,7 @@
     transition: all 0.25s;
   }
   #host:hover {
-    background: rgba(52,0,159,1)
+    background: rgba(52,0,159,1);
   }
   .mainRight {
     justify-content: center;
@@ -265,30 +263,31 @@
     margin: 0;
   }
 
-  @media only screen and (min-width: 114px) and (max-width: 767px) {
-    body {
-      overflow: visible;
+  @media only screen and (max-width: 601px) {
+    .topNavContainer {
+      width: 50%;
     }
     .mainWrapper {
       flex-direction: column;
-      height: 200vh;
+      height: 180vh;
+    }
+    .menu {
+      z-index: 100;
+      right: -50%;
+      width: 50%;
     }
     .mainLeft, .mainRight {
       width: 100%;
+      height: 90vh;
     }
-}
-  @media only screen and (min-width: 768px) {
-    .mainWrapper {
-      flex-direction: row;
+    .svgPic {
+      width: 90%;
     }
-    .mainLeft, .mainRight {
-      width: 50%;
-    }
-}
+  }
 </style>
 
 <head>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/6cc08cc3c7.js" crossorigin="anonymous"></script>
 </head>
@@ -314,16 +313,48 @@
     </div>
     <div class="container topNavRight topNavContainer">
       <div class="shareButton container">
+        <i class="fas fa-bars fa-lg"></i>
         <div class="shareButtonEffect">
 
         </div>
-        <p>
-          Share
-        </p>
       </div>
     </div>
   </div>
   <div class="container mainWrapper">
+    <div class="container menu">
+      <div class="container menuInner">
+        <div class="container menuOption" id="how">
+          <p>
+            How does it work?
+          </p>
+        </div>
+        <div class="collapsible" id="howWorks">
+          <p>
+            WatchPartyTime shares your screen and plays it front and center for everyone you invite.
+            Everyone has the option to enable their mic & join in on the voice chat. Share the link to people you want to watch with.
+          </p>
+        </div>
+        <div class="container menuOption">
+          <p>
+            Share
+          </p>
+        </div>
+        <div class="collapsible" id="howWorks">
+          <p>
+
+          </p>
+        </div>
+        <div class="container menuOption">
+          <p>
+
+          </p>
+        </div>
+        <div class="collapsible" id="howWorks">
+          <p>
+          </p>
+        </div>
+      </div>
+    </div>
     <div class="container mainLeft">
       <div class="svgPic"></div>
       <div class="container mainText">
@@ -363,5 +394,35 @@ window.onload = () => {
       document.querySelector('.loader').style.display = "none";
   })
 }
+let menuButton = document.querySelector('.shareButton')
+let menu = document.querySelector('.menu')
+menuButton.addEventListener('click', () => {
+  menu.classList.toggle('menuActive');
+  document.querySelector('.shareButtonEffect').classList.toggle('menuClick');
+})
+let how = document.getElementById('how');
+let coll = document.getElementsByClassName('menuOption');
+/*for (let c = 0; c < coll.length; c++) {
+  coll[c].addEventListener('click', (event) => {
+    console.log(coll.length);
+    event.target.classList.toggle('collActive');
+    let content = event.target.nextElementSibling;
+    console.log(content);
+    if (content.style.maxHeight != '0') {
+      content.style.maxHeight = '0';
+    } else {
+      content.style.maxHeight = content.scrollHeight + 'px';
+    }
+  })
+}*/
+how.addEventListener('click', () => {
+  how.classList.toggle('collActive');
+  let content = how.nextElementSibling;
+  if (content.style.maxHeight) {
+    content.style.maxHeight = null;
+  } else {
+    content.style.maxHeight = content.scrollHeight + 'px';
+  }
+})
 </script>
 </html>
