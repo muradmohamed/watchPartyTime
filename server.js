@@ -17,12 +17,13 @@ app.get('/:room', (req, res) => {
   res.render('room.ejs', { roomId: req.params.room })
 })
 
-let movieStateServer = 0;
 let movieUserServer;
 
 io.on('connection', socket => {
   socket.on('join-room', async(roomId, userId) => {
     socket.join(roomId)
+    io.sockets.adapter.rooms[roomId].movieState = 0;
+    let movieStateServer = io.sockets.adapter.rooms[roomId].movieState;
     const clients = await getRoomClients(roomId);
     let clientsList = clients.length;
     console.log('movieUserServer: ' + movieUserServer)
