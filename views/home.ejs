@@ -15,6 +15,7 @@
     position: relative;
   }
   .loader {
+    z-index: 100;
     position: absolute;
     height: 100%;
     width: 100%;
@@ -125,7 +126,7 @@
     height: 100%;
     opacity: 1;
     box-shadow: 0 0 5px 3px rgba(255,255,255,0.5);
-    animation: flicker 0.1s infinite;
+    /*animation: flicker 0.1s infinite;*/
   }
   .tvColor {
     width: 16.66%;
@@ -263,6 +264,27 @@
   .info p {
     margin: 0;
   }
+
+  @media only screen and (min-width: 114px) and (max-width: 767px) {
+    body {
+      overflow: visible;
+    }
+    .mainWrapper {
+      flex-direction: column;
+      height: 200vh;
+    }
+    .mainLeft, .mainRight {
+      width: 100%;
+    }
+}
+  @media only screen and (min-width: 768px) {
+    .mainWrapper {
+      flex-direction: row;
+    }
+    .mainLeft, .mainRight {
+      width: 50%;
+    }
+}
 </style>
 
 <head>
@@ -305,7 +327,7 @@
     <div class="container mainLeft">
       <div class="svgPic"></div>
       <div class="container mainText">
-        <h1>Watch movies virtually with your friends!</h1>
+        <h1>Watch movies virtually with your friends</h1>
         <div class="container mainButtons">
           <div class="container createRoom">
             <div class="container createButton">
