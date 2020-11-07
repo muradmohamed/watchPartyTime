@@ -182,7 +182,7 @@ body {
   transition: all 3s;
 }
 .coverUp {
-  top: -100%;
+  transform: translateY(-100%);
 }
 .popup {
   border-radius: 5px;
