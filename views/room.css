@@ -57,6 +57,8 @@ body {
     width: 85%;
     height: 70%;
     background: #333;
+    opacity: 1;
+    transition: all 1s;
   }
   @keyframes flicker {
   0% {
@@ -129,6 +131,13 @@ body {
     opacity: 1;
     box-shadow: 0 0 5px 3px rgba(255,255,255,0.5);
     animation: flicker 0.1s infinite;
+  }
+  .tvBackgroundMovie {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    box-shadow: 0 0 5px 3px rgba(255,255,255,0.5);
+    transition: all 1s;
   }
   .tvColor {
     width: 16.66%;
@@ -370,17 +379,17 @@ body {
 .peepInactive {
   opacity: 0.5;
 }
+.tvBackgroundMovieTime {
+  opacity: 0;
+}
 .movieButton {
   cursor: pointer;
   justify-content: center;
   align-items: center;
   position: absolute;
   bottom: 6.25%;
-  background: rgba(52,0,159,0.75);
-  color: rgba(255,255,255,0.5);
   padding: 2.5% 5%;
   border-radius: 5px;
-  border: 2px solid rgba(255,255,255,0.5);
   transition: all 1s;
 }
 .movieButtonMovie {

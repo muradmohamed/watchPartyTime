@@ -262,11 +262,14 @@ function movieTime(movieStateServer) {
 	document.querySelector('.peepsWrapper').classList.remove('peepsActive');
 	document.querySelector('.mainWrapper').classList.remove('movieTime');
 	document.querySelector('.peepsContainer').classList.remove('movieButtonMovie');
+	document.querySelector('.tvEffect').classList.remove('tvBackgroundMovieTime');
 } else if (movieStateServer == 1) {
 	document.querySelector('.cover').classList.add('coverUp');
 	document.querySelector('.peepsWrapper').classList.add('peepsActive');
 	document.querySelector('.mainWrapper').classList.add('movieTime');
 	document.querySelector('.peepsContainer').classList.add('movieButtonMovie');
+	document.querySelector('.tvEffect').classList.add('tvBackgroundMovieTime');
+
 }
 }
 
@@ -277,11 +280,14 @@ function localMovieTime() {
 	document.querySelector('.peepsWrapper').classList.remove('peepsActive');
 	document.querySelector('.mainWrapper').classList.remove('movieTime');
 	document.querySelector('.peepsContainer').classList.remove('movieButtonMovie');
+	document.querySelector('.tvEffect').classList.remove('tvBackgroundMovieTime');
 } else if (movieState == 1) {
 	document.querySelector('.cover').classList.add('coverUp');
 	document.querySelector('.peepsWrapper').classList.add('peepsActive');
 	document.querySelector('.mainWrapper').classList.add('movieTime');
 	document.querySelector('.peepsContainer').classList.add('movieButtonMovie');
+	document.querySelector('.tvEffect').classList.add('tvBackgroundMovieTime');
+
 }
 }
 
