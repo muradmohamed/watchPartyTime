@@ -60,7 +60,7 @@ const peers = {}
 				},5000
 			)
 		})
-	})
+	}).catch(error());
 } else {
 	popup.addEventListener('click', (event) => {
 	     if (event.target.id == 'mic' || event.target.classList.contains('mic')) {
@@ -281,13 +281,22 @@ function localMovieTime() {
 	document.querySelector('.mainWrapper').classList.remove('movieTime');
 	document.querySelector('.peepsContainer').classList.remove('movieButtonMovie');
 	document.querySelector('.tvEffect').classList.remove('tvBackgroundMovieTime');
+	document.querySelector('.tvEffect').addEventListener('transitionend', () =>{
+		document.closeFullScreen ||
+		document.webkitCloseFullScreen ||
+		document.msCloseFullScreen;
+	})
 } else if (movieState == 1) {
 	document.querySelector('.cover').classList.add('coverUp');
 	document.querySelector('.peepsWrapper').classList.add('peepsActive');
 	document.querySelector('.mainWrapper').classList.add('movieTime');
 	document.querySelector('.peepsContainer').classList.add('movieButtonMovie');
 	document.querySelector('.tvEffect').classList.add('tvBackgroundMovieTime');
-
+	document.querySelector('.tvEffect').addEventListener('transitionend', () =>{
+		document.querySelector('.movie').requestFullScreen ||
+		document.querySelector('.movie').webkitRequestFullScreen ||
+		document.querySelector('.movie').msRequestFullScreen;
+	})
 }
 }
 
@@ -300,7 +309,9 @@ document.querySelector('.movieButton').addEventListener("click", () => {
 	socket.emit('movie-time', movieState);
 	localMovieTime()
 })
-
+function error() {
+	popup.innerHTML = 'Error. Please refresh and try again';
+}
 let color;
 /*document.querySelector('.colors').addEventListener('click', event => {
 	if (event.target.classList.contains('color')) {
