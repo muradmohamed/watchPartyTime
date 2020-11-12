@@ -178,7 +178,7 @@ body {
   background: rgba(0,0,0,0);
   width: 100vw;
   height: 100vh;
-  transition:all 3s;
+  transition:background 3s, padding 1s;
 }
 
 .cover {
@@ -213,6 +213,9 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+}
+.paddingOff {
+  padding: 0;
 }
 .option {
   z-index: 1;

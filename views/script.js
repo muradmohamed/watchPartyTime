@@ -1,6 +1,8 @@
 const socket = io("/");
 const videoGrid = document.getElementById("theShow");
 const peeps = document.querySelector('.peepsContainer');
+const peers = {};
+const elem = document.querySelector('.mainWrapper');
 const popup = document.querySelector('.popup');
 const myPeer = new Peer(undefined, {
 	host:'peerjs-server.herokuapp.com',
@@ -28,7 +30,6 @@ socket.on('movie-check', (movieUserServer, movieStateServer, clientsList) => {
 
 const myVideo = document.createElement('video')
 myVideo.muted = true
-const peers = {}
 	if (clientsList <= 1) {
 		videoSrc = 0;
 		socket.emit('movie');
@@ -172,7 +173,8 @@ function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
 	console.log('USERID: ' + userId);
 	console.log('MOVIEUSER: ' + movieUser)
-	if (typeof(movieUser) != 'undefined') {
+	if (movieUser!= null) {
+		console.log(movieUser);
 	let compare = movieUser.localeCompare(call.peer);
 	console.log('movieUser exists')
 } else {
@@ -198,6 +200,7 @@ function connectToNewUser(userId, stream) {
 
 function addVideoStreamMovie(video, stream) {
   video.srcObject = stream;
+	video.setAttribute('controls', 'true');
   video.addEventListener("loadedmetadata", () => {
     video.play();
   });
@@ -263,16 +266,45 @@ function movieTime(movieStateServer) {
 	document.querySelector('.mainWrapper').classList.remove('movieTime');
 	document.querySelector('.peepsContainer').classList.remove('movieButtonMovie');
 	document.querySelector('.tvEffect').classList.remove('tvBackgroundMovieTime');
+	document.querySelector('.cover').addEventListener('transitionend', () => {
+		document.querySelector('.mainWrapper').classList.remove('paddingOff');
+		//closeFullscreen();
+	})
 } else if (movieStateServer == 1) {
 	document.querySelector('.cover').classList.add('coverUp');
 	document.querySelector('.peepsWrapper').classList.add('peepsActive');
 	document.querySelector('.mainWrapper').classList.add('movieTime');
 	document.querySelector('.peepsContainer').classList.add('movieButtonMovie');
 	document.querySelector('.tvEffect').classList.add('tvBackgroundMovieTime');
+	document.querySelector('.cover').addEventListener('transitionend', () => {
+		document.querySelector('.mainWrapper').classList.add('paddingOff');
+		console.log('Blafdgfgf');
+		//openFullscreen();
+ 	})
 
 }
 }
+/* View in fullscreen */
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
 
+/* Close fullscreen */
+function closeFullscreen() {
+  if (elem.exitFullscreen) {
+    elem.exitFullscreen();
+  } else if (elem.webkitExitFullscreen) { /* Safari */
+    elem.webkitExitFullscreen();
+  } else if (elem.msExitFullscreen) { /* IE11 */
+    elem.msExitFullscreen();
+  }
+}
 let movieState = 0;
 function localMovieTime() {
 	if (movieState == 0) {
@@ -281,24 +313,22 @@ function localMovieTime() {
 	document.querySelector('.mainWrapper').classList.remove('movieTime');
 	document.querySelector('.peepsContainer').classList.remove('movieButtonMovie');
 	document.querySelector('.tvEffect').classList.remove('tvBackgroundMovieTime');
-	document.querySelector('.tvEffect').addEventListener('transitionend', () =>{
-		document.closeFullScreen ||
-		document.webkitCloseFullScreen ||
-		document.msCloseFullScreen;
+		document.querySelector('.cover').addEventListener('transitionend', () => {
+			document.querySelector('.mainWrapper').classList.remove('paddingOff');
+
 	})
+
 } else if (movieState == 1) {
 	document.querySelector('.cover').classList.add('coverUp');
 	document.querySelector('.peepsWrapper').classList.add('peepsActive');
 	document.querySelector('.mainWrapper').classList.add('movieTime');
 	document.querySelector('.peepsContainer').classList.add('movieButtonMovie');
 	document.querySelector('.tvEffect').classList.add('tvBackgroundMovieTime');
-	document.querySelector('.tvEffect').addEventListener('transitionend', () =>{
-		document.querySelector('.movie').requestFullScreen ||
-		document.querySelector('.movie').webkitRequestFullScreen ||
-		document.querySelector('.movie').msRequestFullScreen;
+	document.querySelector('.cover').addEventListener('transitionend', () =>{
+		document.querySelector('.mainWrapper').classList.add('paddingOff');
+
 	})
-}
-}
+}}
 
 document.querySelector('.movieButton').addEventListener("click", () => {
 	if (movieState == 0) {
