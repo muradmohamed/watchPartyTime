@@ -1,5 +1,6 @@
 /*General*/
 * {
+  user-select: none;
   box-sizing: border-box;
   font-family: "Roboto";
 }
