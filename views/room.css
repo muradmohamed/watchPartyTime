@@ -15,7 +15,138 @@ body {
   align-items: center;
   overflow: hidden;
 }
+/*Overlay*/
+.overlay {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20000000;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  align-items: center;
+  justify-content: center;
+}
+.overlayCarousel {
+  width: 70%;
+  height: 95%;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
 
+
+.oc {
+  background: rgba(255,255,255,0.9);
+  border-radius: 5px;
+  transition: all 0.25s;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding-top: 2.5%;
+  padding-bottom: 10%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+}
+.oc * {
+  padding: 1.25%;
+}
+.ocNext {
+  transform: translateX(200%);
+  opacity: 0;
+}
+.overlayImg {
+  height: 60%;
+}
+.oc p {
+  margin: 0;
+}
+.overlayBottom {
+  width: 100%;
+  height: 10%;
+  position: absolute;
+  bottom: 1.25%;
+  left: 0;
+}
+.copyContainer {
+  width: 40%;
+  padding-left: 1.25%;
+}
+.copyContainerInner {
+  position: relative;
+  user-select: none;
+  width: 50%;
+  flex-direction: row;
+  cursor: pointer;
+  padding: 0 2.5%;
+  justify-content: space-around;
+  align-items: center;
+  transition: all 0.25s;
+}
+.copyContainerInner:hover {
+  box-shadow: 1px 1px 3px #333;
+}
+.copyContainerInner:target {
+  border: 5px solid green;
+}
+.fa-check {
+  color: green;
+  position: absolute;
+  right: -20%;
+  opacity: 1;
+  transition: opacity 0.25s;
+}
+.fa-copy {
+  border: 2px solid #333;
+  padding: 5%;
+  border-radius: 50%;
+}
+.overlayControls {
+  width: 30%;
+  align-items: center;
+}
+.overlayInds {
+  padding: 0 25%;
+  width: 100%;
+  height: 25%;
+  justify-content: space-around;
+  flex-direction: row;
+}
+.overlayInd {
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #333;
+}
+.nextButtonWrapper {
+  justify-content: space-around;
+  width: 40%;
+}
+.nextButton {
+  user-select: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  width: 30%;
+  height: 100%;
+  background: rgb(52,0,159);
+  color: white;
+  transition: box-shadow 0.25s, opacity 0.25s;
+}
+.nextButton:hover {
+  box-shadow: 0 0 5px rgb(52,0,159);
+}
+.seethrough {
+  opacity: 0;
+}
+.seeyou {
+  opacity: 1;
+}
 /*Loader*/
 .load {
   position: absolute;
@@ -178,7 +309,7 @@ body {
   background: rgba(0,0,0,0);
   width: 100vw;
   height: 100vh;
-  transition:background 3s, padding 1s;
+  transition: all 0.75s;
 }
 
 .cover {
@@ -188,7 +319,7 @@ body {
   top: 0;
   left: 0;
   background: rgba(0,0,0,0.9);
-  transition: all 3s;
+  transition: all 0.75s;
 }
 .coverUp {
   transform: translateY(-100%);
@@ -327,7 +458,7 @@ body {
   border-radius: 5px;
   box-shadow: 3px 3px 3px rgba(0,0,0,0.5);
   background: #333;
-  transition: all 1s;
+  transition: all 0.75s;
 }
 .peepsContainer {
   flex-direction: column;
@@ -335,7 +466,7 @@ body {
   align-items: center;
   height: 100%;
   width: 75%;
-  transition: all 1s;
+  transition: all 0.75s;
 }
 .peep {
   margin-top: 10%;
@@ -393,7 +524,7 @@ body {
   bottom: 6.25%;
   padding: 2.5% 5%;
   border-radius: 5px;
-  transition: all 1s;
+  transition: all 0.75s;
 }
 .movieButtonMovie {
   transform: translateX(25%);

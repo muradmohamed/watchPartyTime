@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="/room.css" />
   <script type="text/javascript" src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script>
   <script type="text/javascript" src="/socket.io/socket.io.js" defer></script>
-  <script type="text/javascript" src="/script.js" defer></script>
   <script src="https://kit.fontawesome.com/6cc08cc3c7.js" crossorigin="anonymous" defer></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -35,6 +34,70 @@
 
     </div>
   </div>
+  <div class="container overlay">
+    <div class="container overlayCarousel">
+      <div id="oc1" class="container oc seeyou">
+        <img class="overlayImg host" src="screenshare.svg"/>
+        <p>As host, select the source of your video. It can be a browser tab, app or your whole screen.</p>
+        <p>(Don't forget to click share audio)</p>
+        <p>Then share the room link to who you want.</p>
+      </div>
+
+      <div id="oc2" class="container oc seethrough">
+        <img class="overlayImg guest" src="mic_drop.svg"/>
+        <p>As guest, choose whether or not to share your microphone to participate in voice chat.</p>
+        <p>Text chat coming soon, and will be available regardless of mic sharing.</p>
+      </div>
+
+      <div id="oc3" class="container oc seethrough">
+        <img class="overlayImg final" src="oc3.png"/>
+        <p>Press the bottom icon on the sidebar to enable/disable Cinematic Mode.</p>
+      </div>
+
+
+
+
+      <div class="container overlayBottom">
+        <div class="container copyContainer">
+          <div class="container copyContainerInner" onclick="copyLink()">
+            <i class="fas fa-check seethrough"></i>
+            <i class="far fa-copy"></i>
+            <p>
+              Copy Link
+            </p>
+          </div>
+        </div>
+        <div class="container overlayControls">
+          <div class="container overlayInds">
+            <div class="overlayInd "></div>
+            <div class="overlayInd "></div>
+            <div class="overlayInd " style="background:rgba(255,255,255,0.5)"></div>
+          </div>
+
+        </div>
+        <div class="container nextButtonWrapper">
+          <div class="container nextButton prevButton" onclick="plusSlides(-1)">
+            <p class="nextButtonText">
+              Prev
+            </p>
+          </div>
+
+          <div class="container nextButton nextButton1" onclick="plusSlides(1)">
+            <p class="nextButtonText">
+              Next
+            </p>
+          </div>
+          <div class="container nextButton skipButton">
+            <p class="skipButtonText">
+              Skip
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+</div>
 <div class="container mainWrapper">
   <div class="container peepsWrapper">
     <div class="peepsContainer container">
@@ -94,6 +157,8 @@
     <div class="cover"></div>
   </div>
 </div>
+<script type="text/javascript" src="/script.js" defer></script>
+
 </body>
 
 </html>
