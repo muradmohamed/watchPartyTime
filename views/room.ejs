@@ -31,9 +31,9 @@
 
     <h1>WatchPartyTime</h1>
     <div class="loading load">
-
     </div>
   </div>
+<div class="container mainWrapper">
   <div class="container overlay">
     <div class="container overlayCarousel">
       <div id="oc1" class="container oc seeyou">
@@ -53,10 +53,6 @@
         <img class="overlayImg final" src="oc3.png"/>
         <p>Press the bottom icon on the sidebar to enable/disable Cinematic Mode.</p>
       </div>
-
-
-
-
       <div class="container overlayBottom">
         <div class="container copyContainer">
           <div class="container copyContainerInner" onclick="copyLink()">
@@ -73,7 +69,6 @@
             <div class="overlayInd "></div>
             <div class="overlayInd " style="background:rgba(255,255,255,0.5)"></div>
           </div>
-
         </div>
         <div class="container nextButtonWrapper">
           <div class="container nextButton prevButton" onclick="plusSlides(-1)">
@@ -81,7 +76,6 @@
               Prev
             </p>
           </div>
-
           <div class="container nextButton nextButton1" onclick="plusSlides(1)">
             <p class="nextButtonText">
               Next
@@ -93,27 +87,11 @@
             </p>
           </div>
         </div>
-
       </div>
-
     </div>
 </div>
-<div class="container mainWrapper">
   <div class="container peepsWrapper">
     <div class="peepsContainer container">
-      <div class="container movieButton">
-        <i class="fas fa-tv">
-          <div class="tvEffect container">
-            <div class="container tvBackgroundMovie">
-              <div class="tvColor"></div>
-              <div class="tvColor"></div>
-              <div class="tvColor"></div>
-              <div class="tvColor"></div>
-              <div class="tvColor"></div>
-              <div class="tvColor"></div>
-            </div>
-          </div>
-        </i>      </div>
     </div>
   </div>
 
@@ -121,40 +99,17 @@
 
   </div>
   <div class="container popup">
-    <div class="container popupText">
-      <div class="container popupMoreText">
-      <!--  <p>Choose a color and whether you'd like to host or view the movie.</p> -->
       <p>
-        Would you like to enable voice chat?
-      </div>
-      <!--<div class="container colors">
-        <div class="color yellow" id="yellow"></div>
-        <div class="color red"id ="red"></div>
-        <div class="color turq" id="turq"></div>
-        <div class="color blue" id="blue"></div>
-        <div class="color orange" id="orange"></div>
-        <div class="color purple" id="purple"></div>
-        <div class="color green" id="green"></div>
-        <div class="color pink" id="pink"></div>
-      </div> -->
-    </div>
-    <div class="container popupOptions">
-      <div class="container option" id="mic">
-        <p class="mic">
-          Yes
-        </p>
-
-      </div>
-      <div class="container option" id="noChat">
-        <p class="noChat">
-          No
-        </p>
-
-      </div>
+        Please input a nickname
+      </p>
+      <input type="text" id="name"/>
+    <div class="container option" id="mic">
+      <p class="mic">
+        OK
+      </p>
     </div>
   </div>
   <div class="container" id="theShow">
-    <div class="cover"></div>
   </div>
 </div>
 <script type="text/javascript" src="/script.js" defer></script>

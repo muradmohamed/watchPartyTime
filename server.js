@@ -21,13 +21,14 @@ let movieUserServer;
 
 io.on('connection', socket => {
   socket.on('join-room', async(roomId, userId) => {
+    //Join room
     socket.join(roomId)
-    io.sockets.adapter.rooms[roomId].movieState = 0;
-    let movieStateServer = io.sockets.adapter.rooms[roomId].movieState;
+    //Get clients list
     const clients = await getRoomClients(roomId);
     let clientsList = clients.length;
-    console.log('movieUserServer: ' + movieUserServer)
-    socket.emit('movie-check', movieUserServer, movieStateServer, clientsList);
+
+    socket.emit('movie-check', movieUserServer, clientsList);
+
     console.log('CLIENTS: ' + clients);
     socket.to(roomId).broadcast.emit('user-connected', userId)
 
@@ -35,16 +36,15 @@ io.on('connection', socket => {
       socket.to(roomId).broadcast.emit('user-disconnected', userId)
     })
 
-    socket.on('movie-time', (movieState) => {
-      movieStateServer = movieState
-      socket.to(roomId).emit('movie-times', movieStateServer)
-    })
-
     socket.on('movie', () => {
       movieUserServer = userId;
     })
   })
 })
+
+function addMessage(msg, nickname) {
+  let messages = '';
+}
 
 function getRoomClients(roomId) {
   return new Promise((resolve, reject) => {
